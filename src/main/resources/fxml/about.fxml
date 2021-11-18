@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TextArea editable="false" prefHeight="374.0" prefWidth="600.0" text="Product Version&#10;code-generator 1.0.0&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;&#10;rui.zhou@cignacmb.com" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="80.0" left="50.0" right="50.0" top="100.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </TextArea>
+   </center>
+</BorderPane>
