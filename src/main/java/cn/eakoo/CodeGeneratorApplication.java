@@ -13,16 +13,13 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class CodeGeneratorApplication extends AbstractJavaFxApplicationSupport {
 
-	private Stage stage;
-
 	public static void main(String[] args) {
-		launch(CodeGeneratorApplication.class, MainView.class,new CustomSplashScreen(), args);
+		launch(CodeGeneratorApplication.class, MainView.class, new CustomSplashScreen(), args);
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		stage.setTitle("代码生成器");
-		stage.setAlwaysOnTop(true);
 		stage.setResizable(false);
 		super.start(stage);
 	}

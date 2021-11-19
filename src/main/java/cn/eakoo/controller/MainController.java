@@ -1,32 +1,32 @@
 package cn.eakoo.controller;
 
 import cn.eakoo.CodeGeneratorApplication;
+import cn.eakoo.data.DataSource;
+import cn.eakoo.data.GlobalConfig;
+import cn.eakoo.data.PackageConfig;
+import cn.eakoo.util.AlertUtils;
 import cn.eakoo.veiw.AboutView;
 import cn.eakoo.veiw.SettingView;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
-import com.baomidou.mybatisplus.generator.config.rules.DateType;
+import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
+import org.springframework.context.ApplicationContext;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -45,101 +45,124 @@ public class MainController implements Initializable {
     public TextField codePath;
     public TextField xmlPath;
 
-    @FXML
+    private static final String DEFAULT_AUTHOR = "rui.zhou";
+    private static final String DEFAULT_PATH = "D://CodeGenerator";
+    private static final String DEFAULT_XML_PATH = "D://CodeGenerator//resources";
+    private static final String DEFAULT_PARENT_PACKAGE = "com.cignacmb";
+    private static final String DEFAULT_MODULE_NAME = "ibss";
+
+    @Resource
     private SettingController settingController;
-
-
-    private static final String USER_NAME = "ncm_uat";
-    private static final String PASS_WORD = "ncm_uat123";
-    private static final String URL = "jdbc:oracle:thin:@10.142.141.197:1521:dborgbk01";
 
     @SneakyThrows
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*TabPane load = FXMLLoader.load(Objects.requireNonNull(this.getClass().getResource("/fxml/setting.fxml")));
-        log.info("load : {}", load);
-        load.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            log.info("oldValue : {}, newValue : {}", oldValue, newValue);
-        });*/
+        // 预加载配置
+        ApplicationContext applicationContext = SpringContextHolder.getApplicationContext();
+        SettingView settingView = applicationContext.getBean(SettingView.class);
+        CodeGeneratorApplication.getStage().setScene(new Scene(settingView.getView()));
     }
 
-    /**
-     * 启动完成初始化
-     *
-     * @return void
-     */
-    @SneakyThrows
     @PostConstruct
-    public void init(){
-        TabPane load = FXMLLoader.load(Objects.requireNonNull(this.getClass().getResource("/fxml/setting.fxml")));
-        log.info("load : {}", load);
-        load.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            log.info("oldValue : {}, newValue : {}", oldValue, newValue);
-        });
+    public void init() {
+
     }
 
     @FXML
     public void aboutClick(ActionEvent actionEvent) {
-//        CodeGeneratorApplication.getStage().close();
         CodeGeneratorApplication.showView(AboutView.class, Modality.APPLICATION_MODAL);
     }
 
     @FXML
     public void createCode(ActionEvent actionEvent) {
+        try {
+            // 获取配置的数据源
+            DataSource dataSource = settingController.getDataSource();
+            DataSourceConfig.Builder dataSourceConfigBuilder = new DataSourceConfig.Builder(dataSource.getUrl(),
+                    dataSource.getUser(), dataSource.getPassword());
+            FastAutoGenerator fastAutoGenerator = FastAutoGenerator.create(dataSourceConfigBuilder);
 
-        String[] tableArray = tables.getText().split(",");
-        log.info("tableArray : {}", tableArray[0]);
-        String[] tablePrefixArray = tablePrefix.getText().split(",");
-        log.info("tablePrefixArray : {}", tablePrefixArray[0]);
-        String codeCreatePath = StringUtils.isBlank(codePath.getText()) ? "D://CodeGenerator" : codePath.getText();
-        log.info("codeCreatePath : {}", codeCreatePath);
-        String mapperXmlPath = StringUtils.isBlank(xmlPath.getText())? "D://CodeGenerator" : xmlPath.getText();
-        log.info("mapperXmlPath : {}", mapperXmlPath);
-        String authorStr = StringUtils.isBlank(author.getText()) ? "rui.zhou" : author.getText();
-        log.info("authorStr : {}", authorStr);
+            // 获取基本信息
+            String[] tableArray = tables.getText().split(",");
+            String[] tablePrefixArray = tablePrefix.getText().split(",");
+            String codeCreatePath = StringUtils.isBlank(codePath.getText()) ? DEFAULT_PATH : codePath.getText();
+            String mapperXmlPath = StringUtils.isBlank(xmlPath.getText()) ? DEFAULT_XML_PATH : xmlPath.getText();
+            String authorStr = StringUtils.isBlank(author.getText()) ? DEFAULT_AUTHOR : author.getText();
+            String parent = StringUtils.isBlank(groupId.getText()) ? DEFAULT_PARENT_PACKAGE : groupId.getText();
+            String moduleName = StringUtils.isBlank(artifactId.getText()) ? DEFAULT_MODULE_NAME : artifactId.getText();
 
-        FastAutoGenerator.create(new DataSourceConfig.Builder(URL, USER_NAME, PASS_WORD))
-                .globalConfig(builder -> {
-                    builder.author(authorStr) // 设置作者
-                            .commentDate("yyyy-MM-dd")
-                            .dateType(DateType.TIME_PACK)
-                            .enableSwagger() // 开启 swagger 模式
-                            .fileOverride() // 覆盖已生成文件
-                            .outputDir(codeCreatePath); // 指定输出目录
-                })
-                .packageConfig(builder -> {
-                    builder.parent(groupId.getText()) // 设置父包名
-                            .moduleName(artifactId.getText()) // 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperXmlPath)); // 设置mapperXml生成路径
-                })
-                .strategyConfig(builder -> {
-                    builder.addInclude(tableArray) // 设置需要生成的表名
-                            .addTablePrefix(tablePrefixArray); // 设置过滤表前缀
-                })
-                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
-                /*.templateConfig(builder -> builder.disable(TemplateType.ENTITY)
-                        .entity("/templates/entity.java")
-                        .service("/templates/service.java")
-                        .serviceImpl("/templates/serviceImpl.java")
-                        .mapper("/templates/mapper.java")
-                        .mapperXml("/templates/mapper.xml")
-                        .controller("/templates/controller.java")
-                        .build())*/
-                /*.injectionConfig(builder -> builder.beforeOutputFile((tableInfo, stringObjectMap) -> {
+            // 设置全局配置
+            GlobalConfig globalConfig = settingController.getGlobalConfig();
+            log.info("globalConfig : {}", globalConfig);
+            fastAutoGenerator.globalConfig(builder -> {
+                builder.author(authorStr);
+                builder.commentDate(globalConfig.getCommentDate());
+                builder.dateType(globalConfig.getDateType());
+                builder.outputDir(codeCreatePath);
+                if (globalConfig.isEnableSwagger()) {
+                    builder.enableSwagger();
+                }
+                if (globalConfig.isEnableKotlin()) {
+                    builder.enableKotlin();
+                }
+                if (globalConfig.isFileOverride()) {
+                    builder.fileOverride();
+                }
+                if (globalConfig.isDisableOpenDir()) {
+                    builder.disableOpenDir();
+                }
+            });
 
-                })
-                        .customMap(Collections.singletonMap("test", "testValue"))
-                        .customFile(Collections.singletonMap("test.txt", "/templates/test.vm"))
-                        .build())*/
-                .execute();
-    }
+            // 设置包配置
+            PackageConfig packageConfig = settingController.getPackageConfig();
+            log.info("packageConfig : {}", packageConfig);
+            fastAutoGenerator.packageConfig(builder -> {
+                builder.parent(parent);
+                builder.moduleName(moduleName);
+                builder.entity(packageConfig.getEntity());
+                builder.service(packageConfig.getService());
+                builder.serviceImpl(packageConfig.getServiceImpl());
+                builder.mapper(packageConfig.getMapper());
+                builder.xml(packageConfig.getMapperXml());
+                builder.controller(packageConfig.getController());
+                builder.other(packageConfig.getOther());
+                builder.pathInfo(Collections.singletonMap(OutputFile.mapperXml, mapperXmlPath));
+            });
 
-    @FXML
-    public void testDataBase1(ActionEvent actionEvent) {
+            // 设置策略配置
+            fastAutoGenerator.strategyConfig(builder -> {
+                builder.addInclude(tableArray);
+                builder.addTablePrefix(tablePrefixArray);
+            });
 
+            // 设置模板配置
+            fastAutoGenerator.templateEngine(new FreemarkerTemplateEngine());
+            fastAutoGenerator.templateConfig(builder -> {
+                builder.disable(TemplateType.ENTITY);
+                builder.entity("/templates/entity.java");
+                builder.service("/templates/service.java");
+                builder.serviceImpl("/templates/serviceImpl.java");
+                builder.mapper("/templates/mapper.java");
+                builder.mapperXml("/templates/mapper.xml");
+                builder.controller("/templates/controller.java");
+            });
+
+            // 设置注入配置
+            fastAutoGenerator.injectionConfig(builder -> {
+                    builder.beforeOutputFile((tableInfo, objectMap) ->
+                            log.info("tableInfo : {}, objectMap : {}", tableInfo.getEntityName(), objectMap.size()));
+//                    builder.customMap(Collections.singletonMap("test", "baomidou"));
+//                    builder.customFile(Collections.singletonMap("test.txt", "/templates/test.vm"));
+            });
+            fastAutoGenerator.execute();
+
+        } catch (Exception e) {
+            log.error("create code error", e);
+            AlertUtils.error(e.getMessage(), e);
+        }
     }
 
     public void settingClick(ActionEvent actionEvent) {
-        CodeGeneratorApplication.showView(SettingView.class, Modality.WINDOW_MODAL);
+        CodeGeneratorApplication.showView(SettingView.class, Modality.APPLICATION_MODAL);
     }
 }
