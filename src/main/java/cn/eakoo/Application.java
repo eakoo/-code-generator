@@ -11,10 +11,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @author rui.zhou
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class CodeGeneratorApplication extends AbstractJavaFxApplicationSupport {
+public class Application extends AbstractJavaFxApplicationSupport {
 
 	public static void main(String[] args) {
-		launch(CodeGeneratorApplication.class, MainView.class, new CustomSplashScreen(), args);
+		launch(Application.class, MainView.class, new CustomSplashScreen(), args);
 	}
 
 	@Override

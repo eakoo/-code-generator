@@ -23,7 +23,7 @@ public class CustomSplashScreen extends SplashScreen {
 
     @Override
     public String getImagePath() {
-        return super.getImagePath();
+        return "/images/logo.gif";
     }
 
 }

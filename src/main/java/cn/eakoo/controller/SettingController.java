@@ -1,19 +1,16 @@
 package cn.eakoo.controller;
-import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.po.LikeTable;
+import cn.eakoo.data.ServiceConfig;
+import cn.eakoo.data.ControllerConfig;
+import cn.eakoo.data.EntityConfig;
+import cn.eakoo.data.MapperConfig;
 
-import java.io.IOException;
-import java.util.HashMap;
-import cn.eakoo.data.PackageConfig;
-import com.baomidou.mybatisplus.generator.config.rules.DateType;
-
-import cn.eakoo.data.DataSource;
-import cn.eakoo.data.GlobalConfig;
-import cn.eakoo.data.Result;
+import cn.eakoo.data.*;
 import cn.eakoo.util.AlertUtils;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import de.felixroske.jfxsupport.FXMLController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -22,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.annotation.Order;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -133,13 +129,13 @@ public class SettingController implements Initializable {
     }
 
     /**
-    * 测试数据库连接
-    *
-    * @param url 连接 url
-    * @param user 用户
-    * @param password 密码
-    * @return Object
-    */
+     * 测试数据库连接
+     *
+     * @param url 连接 url
+     * @param user 用户
+     * @param password 密码
+     * @return Object
+     */
     public Result testConnection(String url, String user, String password){
         try {
             Result result = new Result();
@@ -232,5 +228,31 @@ public class SettingController implements Initializable {
         packageConfig.setController(StringUtils.isBlank(controllerTextField.getText()) ? "controller" : controllerTextField.getText());
         packageConfig.setOther(StringUtils.isBlank(customTextField.getText()) ? "custom" : customTextField.getText());
         return packageConfig;
+    }
+
+    /**
+     * 获取策略配置
+     *
+     * @return StrategyConfig
+     */
+    public StrategyConfig getStrategyConfig() {
+        StrategyConfig strategyConfig = new StrategyConfig();
+        strategyConfig.setEnableCapitalMode(false);
+        strategyConfig.setEnableSkipView(false);
+        strategyConfig.setDisableSqlFilter(false);
+        strategyConfig.setEnableSchema(false);
+        strategyConfig.setLikeTable(new LikeTable(""));
+        strategyConfig.setNotLikeTable(new LikeTable(""));
+        strategyConfig.setAddInclude(new String[]{});
+        strategyConfig.setAddExclude(new String[]{});
+        strategyConfig.setAddTablePrefix(new String[]{});
+        strategyConfig.setAddTableSuffix(new String[]{});
+        strategyConfig.setAddFieldPrefix(new String[]{});
+        strategyConfig.setAddFieldSuffix(new String[]{});
+        strategyConfig.setEntityConfig(new EntityConfig());
+        strategyConfig.setMapperConfig(new MapperConfig());
+        strategyConfig.setServiceConfig(new ServiceConfig());
+        strategyConfig.setControllerConfig(new ControllerConfig());
+        return strategyConfig;
     }
 }
