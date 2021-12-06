@@ -1,10 +1,10 @@
 package cn.eakoo.controller;
+
 import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 import cn.eakoo.data.ServiceConfig;
 import cn.eakoo.data.ControllerConfig;
 import cn.eakoo.data.EntityConfig;
 import cn.eakoo.data.MapperConfig;
-
 import cn.eakoo.data.*;
 import cn.eakoo.util.AlertUtils;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
@@ -19,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.net.URL;
@@ -58,9 +57,6 @@ public class SettingController implements Initializable {
     public TextField controllerTextField;
     public TextField customTextField;
     private DataSource dataSource;
-
-    @Resource
-    private MainController mainController;
 
     private final ObservableList<CheckBox> dataBaseCheckBoxList = FXCollections.observableArrayList();
 
@@ -131,7 +127,7 @@ public class SettingController implements Initializable {
     /**
      * 测试数据库连接
      *
-     * @param url 连接 url
+     * @param url 连接 URL
      * @param user 用户
      * @param password 密码
      * @return Object
@@ -146,6 +142,9 @@ public class SettingController implements Initializable {
             String databaseProductVersion = connection.getMetaData().getDatabaseProductVersion();
             result.setMessage(databaseProductVersion);
             connection.close();
+
+            // 如果选中的是当前数据库
+
             return result;
         } catch (ClassNotFoundException | SQLException e) {
             return new Result(99, e.getMessage(), e);
@@ -220,7 +219,7 @@ public class SettingController implements Initializable {
      */
     public PackageConfig getPackageConfig() {
         PackageConfig packageConfig = new PackageConfig();
-        packageConfig.setEntity(StringUtils.isBlank(entityTextField.getText()) ? "entity" : entityTextField.getText());
+        packageConfig.setEntity(StringUtils.isBlank(entityTextField.getText()) ? "data.core" : entityTextField.getText());
         packageConfig.setService(StringUtils.isBlank(serviceTextField.getText()) ? "service" : serviceTextField.getText());
         packageConfig.setServiceImpl(StringUtils.isBlank(serviceImplTextField.getText()) ? "service.impl" : serviceImplTextField.getText());
         packageConfig.setMapper(StringUtils.isBlank(mapperTextField.getText()) ? "mapper" : mapperTextField.getText());
@@ -242,7 +241,7 @@ public class SettingController implements Initializable {
         strategyConfig.setDisableSqlFilter(false);
         strategyConfig.setEnableSchema(false);
         strategyConfig.setLikeTable(new LikeTable(""));
-        strategyConfig.setNotLikeTable(new LikeTable(""));
+        strategyConfig.setNotLikeTable(null);
         strategyConfig.setAddInclude(new String[]{});
         strategyConfig.setAddExclude(new String[]{});
         strategyConfig.setAddTablePrefix(new String[]{});

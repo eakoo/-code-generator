@@ -242,10 +242,10 @@
                                                      <Label text="URL" GridPane.rowIndex="1" />
                                                      <Label text="USER" GridPane.rowIndex="2" />
                                                      <Label text="PASSWORD" GridPane.rowIndex="3" />
-                                                     <TextField promptText="中间平台UAT" GridPane.columnIndex="1" />
-                                                     <TextField prefHeight="23.0" prefWidth="128.0" promptText="jdbc:oracle:thin:@127.0.0.1:1521:base" styleClass="url" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                     <TextField promptText="username" styleClass="user" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                     <PasswordField promptText="password" styleClass="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                     <TextField promptText="中间平台UAT" text="中间平台UAT" GridPane.columnIndex="1" />
+                                                     <TextField prefHeight="23.0" prefWidth="128.0" text="jdbc:oracle:thin:@10.142.141.45:1521:uatogg1" promptText="jdbc:oracle:thin:@127.0.0.1:1521:base" styleClass="url" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                     <TextField promptText="username" text="e_mid_user" styleClass="user" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                     <PasswordField promptText="password" text="Aa123456" styleClass="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                  </children>
                                               </GridPane>
                                               <Button layoutX="91.0" layoutY="224.0" mnemonicParsing="false" text="Test Connection" />
@@ -274,10 +274,10 @@
                                                      <Label text="URL" GridPane.rowIndex="1" />
                                                      <Label text="USER" GridPane.rowIndex="2" />
                                                      <Label text="PASSWORD" GridPane.rowIndex="3" />
-                                                     <TextField promptText="中间平台UAT" GridPane.columnIndex="1" />
-                                                     <TextField prefHeight="23.0" prefWidth="128.0" promptText="jdbc:oracle:thin:@127.0.0.1:1521:base" styleClass="url" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                     <TextField promptText="username" styleClass="user" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                     <PasswordField promptText="password" styleClass="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                     <TextField promptText="中间平台UAT" text="ncm_uat" GridPane.columnIndex="1" />
+                                                     <TextField prefHeight="23.0" prefWidth="128.0" text="jdbc:oracle:thin:@10.142.141.197:1521:dborgbk01" promptText="jdbc:oracle:thin:@127.0.0.1:1521:base" styleClass="url" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                     <TextField promptText="username" styleClass="user" text="ncm_uat" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                     <PasswordField promptText="password" text="ncm_uat123" styleClass="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                  </children>
                                               </GridPane>
                                               <Button layoutX="91.0" layoutY="224.0" mnemonicParsing="false" text="Test Connection" />
@@ -306,10 +306,10 @@
                                                      <Label text="URL" GridPane.rowIndex="1" />
                                                      <Label text="USER" GridPane.rowIndex="2" />
                                                      <Label text="PASSWORD" GridPane.rowIndex="3" />
-                                                     <TextField promptText="中间平台UAT" GridPane.columnIndex="1" />
-                                                     <TextField prefHeight="23.0" prefWidth="128.0" promptText="jdbc:oracle:thin:@127.0.0.1:1521:base" styleClass="url" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                     <TextField promptText="username" styleClass="user" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                     <PasswordField promptText="password" styleClass="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                     <TextField promptText="中间平台UAT" text="read_icis" GridPane.columnIndex="1" />
+                                                     <TextField prefHeight="23.0" prefWidth="128.0" text="jdbc:oracle:thin:@10.142.141.165:1521:icisuat3" promptText="jdbc:oracle:thin:@127.0.0.1:1521:base" styleClass="url" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                     <TextField promptText="username" styleClass="user" text="read_icis" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                     <PasswordField promptText="password" styleClass="password" text="read_icis" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                  </children>
                                               </GridPane>
                                               <Button layoutX="91.0" layoutY="224.0" mnemonicParsing="false" text="Test Connection" />

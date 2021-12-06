@@ -142,16 +142,31 @@ public class MainController implements Initializable {
                 this.setCommonStrategy(tableArray, tablePrefixArray, builder, strategyConfig);
 
                 //2. Entity策略
-                this.setEntityStrategy(builder, strategyConfig.getEntityConfig());
+                builder.entityBuilder()
+                        .disableSerialVersionUID()
+                        .enableChainModel()
+                        .enableLombok()
+                        .enableRemoveIsPrefix()
+                        .enableTableFieldAnnotation()
+                        .idType(IdType.INPUT)
+                        .enableActiveRecord()
+                        .formatFileName("%sDO");
+//                this.setEntityStrategy(builder, strategyConfig.getEntityConfig());
 
                 //3. Mapper策略
-                this.setMapperStrategy(builder, strategyConfig.getMapperConfig());
+                builder.mapperBuilder()
+                        .enableMapperAnnotation()
+                        .enableBaseResultMap()
+                        .enableBaseColumnList()
+                        .formatMapperFileName("%sMapper")
+                        .formatXmlFileName("%sMapper");
+//                this.setMapperStrategy(builder, strategyConfig.getMapperConfig());
 
                 //4. Service策略
-                this.setServiceStrategy(builder, strategyConfig.getServiceConfig());
+//                this.setServiceStrategy(builder, strategyConfig.getServiceConfig());
 
                 //5. Controller策略
-                this.setControllerStrategy(builder, strategyConfig.getControllerConfig());
+//                this.setControllerStrategy(builder, strategyConfig.getControllerConfig());
 
             });
 
@@ -176,7 +191,7 @@ public class MainController implements Initializable {
     /**
      * 设置模板配置
      *
-     * @param fastAutoGenerator FastAutoGenerator对象
+     * @param fastAutoGenerator FastAutoGenerator 对象
      */
     private void setTemplate(FastAutoGenerator fastAutoGenerator) {
         fastAutoGenerator.templateEngine(new FreemarkerTemplateEngine());
